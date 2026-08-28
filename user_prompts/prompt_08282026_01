@@ -1,0 +1,17 @@
+# Repo setup user prompt - August 28, 2026
+
+In the diary_entries folder, over time, create a record of work I do with the LLM. Here are some initial guidelines to follow:
+
+## Files
+
+Each day, create a new file markdown file with a file name that follows the following pattern (as an example) "08-28-2026_02-30-45pm". 
+
+The topmost heading of these daily files (when we have work to record) will be be "Entries - August 28, 2026" (as an example of the pattern). 
+
+The daily file will contain multiple entries regarding the work I did with the LLM. 
+
+## Entries
+
+After a period of interactions, I will instruct the LLM to record an entry describing the work done, e.g., what the LLM did, what problems the LLM encountered, what the LLM will do differently next time.
+
+Each entry will be titled with the date and time of the entry, following this pattern: "August 28, 2026 - 10:40am - [append name of LLM used]".
