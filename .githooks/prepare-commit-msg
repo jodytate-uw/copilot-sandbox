@@ -10,14 +10,14 @@ case "$COMMIT_SOURCE" in
     merge|squash) exit 0 ;;
 esac
 
-ASSISTANT="$(git config --get commit.codingAssistant)"
+COPILOT="$(git config --get commit.githubCopilot)"
 MODEL="$(git config --get commit.llmModel)"
 
-[ -z "$ASSISTANT" ] && ASSISTANT="None"
+[ -z "$COPILOT" ] && COPILOT="false"
 [ -z "$MODEL" ] && MODEL="None"
 
-if ! grep -qi '^Coding-Assistant:' "$COMMIT_MSG_FILE"; then
-    git interpret-trailers --in-place --trailer "Coding-Assistant: $ASSISTANT" "$COMMIT_MSG_FILE"
+if ! grep -qi '^GitHub-Copilot:' "$COMMIT_MSG_FILE"; then
+    git interpret-trailers --in-place --trailer "GitHub-Copilot: $COPILOT" "$COMMIT_MSG_FILE"
 fi
 
 if ! grep -qi '^LLM-Model:' "$COMMIT_MSG_FILE"; then
