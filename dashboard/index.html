@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ORIS Activity Dashboard</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 2rem auto;
+      max-width: 60rem;
+      padding: 0 1rem;
+      line-height: 1.5;
+    }
+
+    h1 {
+      margin-bottom: 0.25rem;
+    }
+
+    .sub {
+      opacity: 0.75;
+      margin-top: 0;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin: 1.5rem 0;
+    }
+
+    input[type="password"] {
+      flex: 1 1 20rem;
+      padding: 0.4rem;
+    }
+
+    button {
+      padding: 0.4rem 1rem;
+      cursor: pointer;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 0.4rem 0.6rem;
+      border-bottom: 1px solid rgba(128, 128, 128, 0.35);
+    }
+
+    th {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    td.num {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    #status {
+      min-height: 1.5em;
+      opacity: 0.8;
+    }
+
+    footer {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      opacity: 0.75;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>ORIS Activity Dashboard</h1>
+  <p class="sub">Commit and pull request totals for Office of Research Information Services staff. Click a name to drill
+    down on GitHub.</p>
+
+  <form id="controls">
+    <input type="password" id="token" placeholder="GitHub token (optional; needed for private/org activity)"
+      autocomplete="off">
+    <button type="submit">Load activity</button>
+  </form>
+
+  <p id="status">Ready.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th data-sort="login">Person</th>
+        <th data-sort="commits" class="num">Commits</th>
+        <th data-sort="prs" class="num">PRs opened</th>
+        <th data-sort="merged" class="num">PRs merged</th>
+        <th>Drill down</th>
+      </tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <footer>
+    Counts come from the GitHub search API and reflect only repositories the supplied credentials can see. Without a
+    token, only public activity is counted and requests are heavily rate limited. The token is held in memory for this
+    page only &mdash; it is never stored or sent anywhere but github.com.
+  </footer>
+
+  <script type="module">
+    const PEOPLE = [
+      { login: 'adriaan-dippenaar', name: null },
+      { login: 'bexung', name: null },
+      { login: 'calebdelv', name: null },
+      { login: 'crysbis-oris', name: null },
+      { login: 'danhuang-oris', name: 'Dan Huang' },
+      { login: 'dbucho-uw', name: null },
+      { login: 'diegob-oris', name: null },
+      { login: 'hamidal-uw', name: 'Hamid Alakbarov' },
+      { login: 'jodytate-uw', name: 'Jody Tate' },
+      { login: 'jvweiner-oris', name: 'Joshua Weiner' },
+      { login: 'lcecil-uw', name: 'Laura Cecil' },
+      { login: 'led-uw', name: 'Laura D' },
+      { login: 'michael-oris', name: null },
+      { login: 'migasj-oris', name: null },
+      { login: 'mindaika-cloud', name: null },
+      { login: 'mramawatuw', name: null },
+      { login: 'mwalk-uw', name: null },
+      { login: 'neil-oris', name: null },
+      { login: 'rhbecker-uw', name: null },
+      { login: 'scarlettsteph07', name: 'Scarlett S' },
+      { login: 'sheri-oris', name: null },
+      { login: 'sirishakonyala123', name: 'sirisk' },
+      { login: 'sudha-oris', name: 'Sudha Bhoomireddy' },
+      { login: 'swort-uw-edu', name: 'Steven Wort' },
+      { login: 'tomash24', name: null },
+      { login: 'vpaulus-uw', name: null }
+    ];
+
+    const rowsEl = document.getElementById('rows');
+    const statusEl = document.getElementById('status');
+    let token = '';
+    let data = PEOPLE.map(p => ({ ...p, commits: null, prs: null, merged: null }));
+    let sortKey = 'login';
+    let sortDir = 1;
+
+    function searchUrl(kind, query) {
+      return `https://github.com/search?type=${kind}&q=${encodeURIComponent(query)}`;
+    }
+
+    function cell(value) {
+      if (value === null) return '—';
+      if (value === 'error') return '?';
+      return value.toLocaleString();
+    }
+
+    function render() {
+      const sorted = [...data].sort((a, b) => {
+        const av = a[sortKey], bv = b[sortKey];
+        if (sortKey === 'login') return sortDir * av.localeCompare(bv);
+        return sortDir * ((bv ?? -1) - (av ?? -1));
+      });
+      rowsEl.innerHTML = sorted.map(p => `
+        <tr>
+          <td><a href="https://github.com/${p.login}">${p.name ?? p.login}</a></td>
+          <td class="num">${cell(p.commits)}</td>
+          <td class="num">${cell(p.prs)}</td>
+          <td class="num">${cell(p.merged)}</td>
+          <td>
+            <a href="${searchUrl('commits', `author:${p.login}`)}">commits</a> ·
+            <a href="${searchUrl('pullrequests', `type:pr author:${p.login}`)}">PRs</a>
+          </td>
+        </tr>`).join('');
+    }
+
+    async function count(endpoint, query) {
+      const headers = { Accept: 'application/vnd.github+json' };
+      if (token) headers.Authorization = `Bearer ${token}`;
+      const res = await fetch(
+        `https://api.github.com/search/${endpoint}?q=${encodeURIComponent(query)}&per_page=1`,
+        { headers }
+      );
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      return (await res.json()).total_count;
+    }
+
+    async function load() {
+      let done = 0;
+      for (const person of data) {
+        statusEl.textContent = `Loading ${person.login} (${++done} of ${data.length})…`;
+        try {
+          person.commits = await count('commits', `author:${person.login}`);
+          person.prs = await count('issues', `type:pr author:${person.login}`);
+          person.merged = await count('issues', `type:pr is:merged author:${person.login}`);
+        } catch (err) {
+          person.commits = person.prs = person.merged = 'error';
+          statusEl.textContent = `Error on ${person.login}: ${err.message}`;
+        }
+        render();
+      }
+      statusEl.textContent = 'Done.';
+    }
+
+    document.getElementById('controls').addEventListener('submit', e => {
+      e.preventDefault();
+      token = document.getElementById('token').value.trim();
+      load();
+    });
+
+    document.querySelectorAll('th[data-sort]').forEach(th => {
+      th.addEventListener('click', () => {
+        const key = th.dataset.sort;
+        sortDir = key === sortKey ? -sortDir : 1;
+        sortKey = key;
+        render();
+      });
+    });
+
+    render();
+  </script>
+</body>
+
+</html>
