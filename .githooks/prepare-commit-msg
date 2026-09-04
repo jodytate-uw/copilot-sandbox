@@ -1,0 +1,25 @@
+#!/bin/sh
+# Safety net: ensure every commit carries the AI-transparency trailers.
+# The author (human or agent) may supply them explicitly; this fills in what is missing.
+
+COMMIT_MSG_FILE="$1"
+COMMIT_SOURCE="$2"
+
+# Skip merges, squashes, and reworded/amended messages that already exist verbatim.
+case "$COMMIT_SOURCE" in
+    merge|squash) exit 0 ;;
+esac
+
+ASSISTANT="$(git config --get commit.codingAssistant)"
+MODEL="$(git config --get commit.llmModel)"
+
+[ -z "$ASSISTANT" ] && ASSISTANT="None"
+[ -z "$MODEL" ] && MODEL="None"
+
+if ! grep -qi '^Coding-Assistant:' "$COMMIT_MSG_FILE"; then
+    git interpret-trailers --in-place --trailer "Coding-Assistant: $ASSISTANT" "$COMMIT_MSG_FILE"
+fi
+
+if ! grep -qi '^LLM-Model:' "$COMMIT_MSG_FILE"; then
+    git interpret-trailers --in-place --trailer "LLM-Model: $MODEL" "$COMMIT_MSG_FILE"
+fi
