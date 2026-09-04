@@ -1,6 +1,6 @@
 #!/bin/sh
-# Safety net: ensure every commit carries the AI-transparency trailers.
-# The author (human or agent) may supply them explicitly; this fills in what is missing.
+# Safety net: add the AI-transparency trailers when Copilot produced the change.
+# Commits made without Copilot carry no trailers at all.
 
 COMMIT_MSG_FILE="$1"
 COMMIT_SOURCE="$2"
@@ -13,11 +13,15 @@ esac
 COPILOT="$(git config --get commit.githubCopilot)"
 MODEL="$(git config --get commit.llmModel)"
 
-[ -z "$COPILOT" ] && COPILOT="false"
-[ -z "$MODEL" ] && MODEL="None"
+case "$COPILOT" in
+    true|True|TRUE|yes|1) ;;
+    *) exit 0 ;;
+esac
+
+[ -z "$MODEL" ] && MODEL="Unspecified"
 
 if ! grep -qi '^GitHub-Copilot:' "$COMMIT_MSG_FILE"; then
-    git interpret-trailers --in-place --trailer "GitHub-Copilot: $COPILOT" "$COMMIT_MSG_FILE"
+    git interpret-trailers --in-place --trailer "GitHub-Copilot: true" "$COMMIT_MSG_FILE"
 fi
 
 if ! grep -qi '^LLM-Model:' "$COMMIT_MSG_FILE"; then

@@ -6,7 +6,8 @@ applyTo: '**'
 
 ## Commit messages
 
-Every commit MUST follow this format:
+Every commit MUST use a [Conventional Commits](https://www.conventionalcommits.org/) subject line.
+Commits produced with GitHub Copilot MUST also carry the AI-transparency trailers:
 
 ```
 type(scope): short imperative summary
@@ -18,12 +19,21 @@ GitHub-Copilot: true
 LLM-Model: <exact model name, e.g. Claude Opus 5>
 ```
 
+A hand-written commit made without Copilot carries no trailers at all:
+
+```
+type(scope): short imperative summary
+
+- Bullet describing what changed and why
+```
+
 Rules:
 
-- Subject line uses [Conventional Commits](https://www.conventionalcommits.org/) types: `feat`, `fix`, `docs`, `refactor`, `build`, `chore`, `test`, `style`, `perf`, `ci`. Scope is optional but preferred.
-- The `GitHub-Copilot` and `LLM-Model` trailers are required on every commit for AI transparency. `GitHub-Copilot` is `true` when Copilot contributed to the change and `false` when it did not. Set `LLM-Model` to the model that actually produced the change, or `None` for a hand-written commit.
+- Subject line types: `feat`, `fix`, `docs`, `refactor`, `build`, `chore`, `test`, `style`, `perf`, `ci`. Scope is optional but preferred.
+- The trailers indicate Copilot involvement by their presence. Never write `GitHub-Copilot: false` — omit both trailers instead.
+- Set `LLM-Model` to the model that actually produced the change.
 - Pass multi-line messages with repeated `-m` flags so the trailers land in the commit footer.
-- A `prepare-commit-msg` hook in `.githooks/` backfills these trailers if they are missing, but always write them explicitly rather than relying on the fallback values.
+- A `prepare-commit-msg` hook in `.githooks/` adds the trailers when `commit.githubCopilot` is `true`, and does nothing otherwise. Write them explicitly anyway rather than relying on the fallback model value.
 
 Enable the hook once per clone:
 
@@ -32,6 +42,8 @@ git config core.hooksPath .githooks
 git config commit.githubCopilot true
 git config commit.llmModel "Claude Opus 5"
 ```
+
+Set `commit.githubCopilot` to `false` for stretches of hand-written work so the hook stays quiet.
 
 ## Before committing
 

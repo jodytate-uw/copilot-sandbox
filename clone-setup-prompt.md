@@ -20,16 +20,17 @@ Required commit message format:
     GitHub-Copilot: true
     LLM-Model: <the model that actually produced the change>
 
-`GitHub-Copilot` is `true` when Copilot contributed to the change and `false` when it did not.
+`GitHub-Copilot` is present only when Copilot contributed to the change. A hand-written commit
+carries neither trailer; never write `GitHub-Copilot: false`.
 
 Do the following:
 
 1. Confirm `.githooks/prepare-commit-msg` exists. If it is missing, create it as a POSIX shell
-   script that appends a `GitHub-Copilot` trailer and an `LLM-Model` trailer to the commit
-   message file whenever either one is absent, reading their values from the `commit.githubCopilot`
-   and `commit.llmModel` git config keys and falling back to `false` and `None` respectively. It
-   must exit early when `$2` is `merge` or `squash`, and use `git interpret-trailers --in-place`
-   to append.
+   script that exits without changing anything when `$2` is `merge` or `squash`, or when the
+   `commit.githubCopilot` config key is not truthy. Otherwise it appends a `GitHub-Copilot: true`
+   trailer and an `LLM-Model` trailer to the commit message file whenever either one is absent,
+   taking the model from `commit.llmModel` and falling back to `Unspecified`. Use
+   `git interpret-trailers --in-place` to append.
 2. Run these commands, substituting the model you are currently running as:
 
        git config core.hooksPath .githooks
