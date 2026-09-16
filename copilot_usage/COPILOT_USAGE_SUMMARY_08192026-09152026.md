@@ -1,0 +1,182 @@
+# Copilot Usage Analysis (Aug 19 - Sep 15, 2026)
+
+## Executive Summary
+
+This report analyzes Copilot usage patterns across 11 active users over a 28-day reporting period. The analysis includes interaction counts, code generation activities, acceptance rates, and language/feature preferences.
+
+---
+
+## 📊 Top Users by Code Generation Activity
+
+### 1. **scarlettsteph07** (ID: 14980353)
+- **Days Active:** 27/28
+- **Code Generations:** 1,376
+- **Acceptances:** 382 (27.8% acceptance rate)
+- **LOC Changes:** +786 / -6
+- **IDE:** VS Code
+- **Top Languages:** TypeScript (617), TSX (453), CSS (238)
+- **Top Features:** Code Completion (1,370), Agent Edit (4)
+- **Usage Pattern:** Extremely active, consistent code completion user with high generation volume and good acceptance rate
+
+---
+
+### 2. **sirishakonyala123** (ID: 180574151)
+- **Days Active:** 10/28
+- **Code Generations:** 596
+- **Acceptances:** 13 (2.2% acceptance rate)
+- **LOC Changes:** +4,877 / -1,796
+- **IDEs:** VS Code, Visual Studio
+- **Top Languages:** JavaScript (216), Bash (72), TypeScript (63)
+- **Top Features:** Chat Panel Agent Mode (387), Agent Edit (203), Code Completion (6)
+- **Usage Pattern:** Primarily agent-driven interactions with significant code refactoring and deletion
+
+---
+
+### 3. **michael-oris** (ID: 247629820)
+- **Days Active:** 18/28
+- **Code Generations:** 406
+- **Acceptances:** 74 (18.2% acceptance rate)
+- **LOC Changes:** +585 / -92
+- **IDEs:** Visual Studio, VS Code
+- **Top Languages:** C# (232), C# (53), Razor (36)
+- **Top Features:** Code Completion (273), Chat Panel Custom Mode (75), Agent Edit (33)
+- **Usage Pattern:** Balanced approach using multiple IDE features, primarily backend (.NET) development
+
+---
+
+### 4. **dbucho-uw** (ID: 180314885)
+- **Days Active:** 18/28
+- **Code Generations:** 390
+- **Acceptances:** 118 (30.3% acceptance rate)
+- **LOC Changes:** +227 / -0
+- **IDE:** VS Code
+- **Top Languages:** SQL (312), R (1)
+- **Top Features:** Code Completion (382), Chat Inline (8)
+- **Usage Pattern:** SQL-focused developer with high acceptance rate, data/analytics work
+
+---
+
+### 5. **migasj-oris** (ID: 195980080)
+- **Days Active:** 19/28
+- **Code Generations:** 343
+- **Acceptances:** 328 (95.6% acceptance rate) ⭐ **Highest acceptance rate**
+- **LOC Changes:** +8,499 / -2,207
+- **IDEs:** Visual Studio
+- **Top Languages:** C# (39), PowerShell (39)
+- **Top Features:** Copilot CLI (243), Code Completion (79)
+- **Usage Pattern:** Heavy CLI user with significant code generation and refactoring work
+
+---
+
+### 6. **calebdelv** (ID: 134324033)
+- **Days Active:** 11/28
+- **Code Generations:** 239
+- **Acceptances:** 40 (16.7% acceptance rate)
+- **LOC Changes:** +339 / -65
+- **IDE:** VS Code
+- **Top Languages:** YAML, Markdown, JSON
+- **Top Features:** Chat Panel Agent Mode (196), Code Completion (43)
+- **Usage Pattern:** Configuration/documentation-focused work with agent interactions
+
+---
+
+### 7. **jvweiner-oris** (ID: 195980172)
+- **Days Active:** 15/28
+- **Code Generations:** 233
+- **Acceptances:** 85 (36.5% acceptance rate)
+- **LOC Changes:** +119 / -0
+- **IDEs:** VS Code, Visual Studio
+- **Top Languages:** JavaScript (81), YAML (8), C# (20)
+- **Top Features:** Code Completion (230)
+- **Usage Pattern:** Cross-platform developer, primarily JavaScript with some backend work
+
+---
+
+### 8. **danhuang-oris** (ID: 245071216)
+- **Days Active:** 15/28
+- **Code Generations:** 182
+- **Acceptances:** 0 (0% acceptance rate)
+- **LOC Changes:** +0 / -0
+- **IDE:** VS Code
+- **Top Languages:** Mermaid, Instructions
+- **Top Features:** Chat Panel Custom Mode (165)
+- **Usage Pattern:** Primarily using chat for planning/design, not accepting code suggestions
+
+---
+
+### 9. **mramawatuw** (ID: 280492604)
+- **Days Active:** 14/28
+- **Code Generations:** 106
+- **Acceptances:** 2 (1.9% acceptance rate)
+- **LOC Changes:** +931 / -794
+- **IDE:** VS Code
+- **Top Languages:** Mule XML (81)
+- **Top Features:** Chat Panel Agent Mode (60), Agent Edit (46)
+- **Usage Pattern:** Integration platform developer (Mule), heavy editing with agent mode
+
+---
+
+### 10. **hamidal-uw** (ID: 183161925)
+- **Days Active:** 12/28
+- **Code Generations:** 90
+- **Acceptances:** 18 (20% acceptance rate)
+- **LOC Changes:** +18 / -0
+- **IDE:** Visual Studio
+- **Top Languages:** SQL (83)
+- **Top Features:** Code Completion (90)
+- **Usage Pattern:** SQL specialist with consistent, focused usage
+
+---
+
+## 📈 Summary Statistics
+
+| Metric | Value |
+|--------|-------|
+| **Total Users Analyzed** | 11 |
+| **Total Code Generations** | 3,955 |
+| **Total Code Acceptances** | 1,330 |
+| **Overall Acceptance Rate** | 33.6% |
+| **Total LOC Added** | 18,168 |
+| **Total LOC Deleted** | 5,252 |
+| **Average Acceptance Rate** | 23.8% |
+
+---
+
+## 💡 Key Insights
+
+### Acceptance Rates
+1. **migasj-oris** leads with 95.6% acceptance (heavy CLI user)
+2. **dbucho-uw** has 30.3% acceptance (SQL focus)
+3. **jvweiner-oris** has 36.5% acceptance (multi-language)
+4. **danhuang-oris** uses Copilot for planning (0% code acceptance)
+
+### Language Distribution
+- **TypeScript/TSX:** Dominant in scarlettsteph07's workflow (1,070/1,376 generations)
+- **SQL:** Primary language for dbucho-uw and hamidal-uw (analytics team)
+- **C#/.NET:** michael-oris and migasj-oris (backend developers)
+- **JavaScript:** sirishakonyala123 and jvweiner-oris (full-stack developers)
+
+### Feature Usage Patterns
+- **Code Completion:** Most popular across all users (3,365 generations)
+- **Chat Panel Agent Mode:** Preferred by sirishakonyala123, calebdelv, mramawatuw
+- **Copilot CLI:** Heavy adoption by migasj-oris (243 generations)
+- **Agent Edit:** sirishakonyala123 (203), mramawatuw (46)
+
+### IDE Preferences
+- **VS Code:** 7 users (scarlettsteph07, jvweiner-oris, dbucho-uw, etc.)
+- **Visual Studio:** 4 users (michael-oris, hamidal-uw, migasj-oris)
+
+---
+
+## 🎯 Recommendations
+
+1. **High Engagement:** scarlettsteph07, sirishakonyala123, and michael-oris show strong engagement and should be considered for feedback/feature testing
+2. **CLI Adoption:** migasj-oris's high CLI usage with 95.6% acceptance suggests CLI tool is highly effective
+3. **Code Completion Focus:** Most users rely on code completion (85% of generations) - this should be prioritized for improvements
+4. **Training Opportunity:** danhuang-oris's 0% acceptance rate suggests they may benefit from training on accepting suggestions
+5. **SQL Support:** Strong SQL usage from dbucho-uw and hamidal-uw indicates need for SQL-specific enhancements
+
+---
+
+*Report Generated: 2026-09-16*  
+*Data Period: 2026-08-19 to 2026-09-15*
